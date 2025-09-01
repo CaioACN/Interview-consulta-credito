@@ -148,11 +148,29 @@ Resposta:
 ```bash
 docker compose up -d --build
 ```
+## Testar consultar-credito
 
-**Serviços disponíveis:**
+> Pré-requisitos: Ter o Docker no sistema.
 
-- API: `http://localhost:8080/api/creditos`
-- Front: `http://localhost:8081`
+- clonar o projeto
+ 
+```bash
+
+ git clone https://github.com/CaioACN/Interview-consulta-credito.git
+```
+ 
+- Executar Docker composse
+
+ ```bash
+ # Ir a pasta
+ cd Interview-consulta-credito/
+ # Executar Docker Compose
+ docker compose up --build -d
+
+ ```
+- Navegar pelo Sistema `http://localhost:8081`
+
+
 
 
 ## ✅ Critérios Atendidos
