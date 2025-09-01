@@ -1,4 +1,5 @@
 # Desafio Técnico – Consulta de Créditos
+<img src="https://img.shields.io/badge/Dev-Caio_Aurelio-informational?style=flat-square&logoColor=white&color=cdcdcd" />
 
 Este repositório contém a solução para o desafio técnico de desenvolvimento de uma **API RESTful em Spring Boot** e um **front-end em Angular**, containerizados via Docker.
 
@@ -36,6 +37,7 @@ Este repositório contém a solução para o desafio técnico de desenvolvimento
 
 ## 📂 Estrutura do Projeto
 
+```bash
 pr-consulta-credito-Api/
 │
 ├── consulta-creditos-api # Back-end Spring Boot
@@ -52,7 +54,7 @@ pr-consulta-credito-Api/
 ├── EsquemaSQL.pdf # Modelagem do banco
 ├── execucaoApp.pdf # Guia de execução
 └── README.md # Este documento
-
+```
 
 ---
 
@@ -75,15 +77,21 @@ CREATE TABLE credito
  base_calculo DECIMAL(15, 2) NOT NULL
 );
 
-Script de população
+-- Script de população
 INSERT INTO credito (numero_credito, numero_nfse, data_constituicao, valor_issqn,
 tipo_credito, simples_nacional, aliquota, valor_faturado, valor_deducao, base_calculo)
 VALUES
 ('123456', '7891011', '2024-02-25', 1500.75, 'ISSQN', true, 5.0, 30000.00, 5000.00, 25000.00),
 ('789012', '7891011', '2024-02-26', 1200.50, 'ISSQN', false, 4.5, 25000.00, 4000.00, 21000.00),
-('654321', '1122334', '2024-01-15', 800.50, 'Outros', true, 3.5, 20000.00, 3000.00, 17000.00);Endpoints da API
-Buscar por NFS-e
+('654321', '1122334', '2024-01-15', 800.50, 'Outros', true, 3.5, 20000.00, 3000.00, 17000.00);
 
+```
+
+### Endpoints da API
+
+#### Buscar por NFS-e
+
+```bash
 GET /api/creditos/{numeroNfse}
 
 Resposta:
@@ -102,9 +110,11 @@ Resposta:
     "baseCalculo": 25000.00
   }
 ]
+```
 
-Buscar por número do crédito
+#### Buscar por número do crédito
 
+```bash
 GET /api/creditos/credito/{numeroCredito}
 
 Resposta:
@@ -121,67 +131,35 @@ Resposta:
   "valorDeducao": 5000.00,
   "baseCalculo": 25000.00
 }
+```
 
-💻 Front-end
+##💻 Front-end
 
-Funcionalidades:
+### Funcionalidades:
 
-Tela de consulta por NFS-e ou Número do Crédito
+- Tela de consulta por NFS-e ou Número do Crédito
+- Tabela paginada e ordenável (Angular Material)
+- Dialog de detalhes
+- Responsivo para dispositivos móveis
 
-Tabela paginada e ordenável (Angular Material)
+##🐳 Executando com Docker Compose
 
-Dialog de detalhes
-
-Responsivo para dispositivos móveis
-
-Execução em dev
-cd consulta-creditos-web
-ng serve -o
-
-🐳 Executando com Docker Compose
-
-Na raiz do projeto:
-
+**Na raiz do projeto:**
+```bash
 docker compose up -d --build
+```
+
+**Serviços disponíveis:**
+
+- API: `http://localhost:8080/api/creditos`
+- Front: `http://localhost:8081`
 
 
-Serviços disponíveis:
+## ✅ Critérios Atendidos
 
-API: http://localhost:8080/api/creditos
-
-Front: http://localhost:8081
-
-Banco (PostgreSQL): porta 5432
-
-🧪 Testes
-Back-end
-cd consulta-creditos-api
-mvn test
-
-Front-end
-cd consulta-creditos-web
-ng test
-
-🔥 Desafios Adicionais
-
-Mensageria: publisher em Kafka ou Azure Service Bus notificando um tópico sempre que uma consulta for realizada.
-
-Testes Automatizados: aumentar cobertura com JUnit (API) e Jasmine/Karma (front).
-
-✅ Critérios Atendidos
-
- API em Spring Boot com endpoints solicitados
-
- Front-end Angular consumindo a API
-
- Banco PostgreSQL com tabela e dados iniciais
-
- Docker Compose para subir API, Front e Banco
-
- Código limpo e organizado
-
- Documentação com instruções de execução
-
-👨‍💻 Autor
-
-Caio Aurélio Cardoso Nunes
+- API em Spring Boot com endpoints solicitados
+- Front-end Angular consumindo a API
+- Banco PostgreSQL com tabela e dados iniciais
+- Docker Compose para subir API, Front e Banco
+- Código limpo e organizado
+- Documentação com instruções de execução
