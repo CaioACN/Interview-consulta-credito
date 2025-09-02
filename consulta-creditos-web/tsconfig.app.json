@@ -11,5 +11,13 @@
   ],
   "include": [
     "src/**/*.d.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    /* Deixe o Angular mais estrito para evitar bugs em tempo de build */
+    "strictInjectionParameters": true,
+    "strictTemplates": true,
+    "disableTypeScriptVersionCheck": true,
+    /* Otimizações padrão para produção */
+    "preserveWhitespaces": false
+  }
 }

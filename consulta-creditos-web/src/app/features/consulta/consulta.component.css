@@ -1,0 +1,172 @@
+.container { 
+  max-width: 960px; 
+  margin: 24px auto; 
+  padding: 0 12px; 
+}
+
+.card { 
+  background: #fff; 
+  border-radius: 12px; 
+  padding: 16px; 
+  box-shadow: 0 2px 8px rgba(0,0,0,.08); 
+  margin-bottom: 16px; 
+}
+
+.table-card { 
+  overflow: auto; 
+  border-radius: 12px; 
+  border: 1px solid #e6e6e6; 
+  background: #fff; 
+}
+
+.row { 
+  display: flex; 
+  gap: 8px; 
+  align-items: center; 
+  flex-wrap: wrap; 
+}
+
+.radios { 
+  gap: 16px; 
+}
+
+.radios label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  accent-color: #1976d2;
+}
+
+input[type="text"], 
+input:not([type]) { 
+  flex: 1; 
+  min-width: 240px; 
+  padding: 10px 12px; 
+  border-radius: 8px; 
+  border: 1px solid #d0d0d0; 
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25,118,210,.15);
+}
+
+button { 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  border: none; 
+  background: #1976d2; 
+  color: #fff; 
+  cursor: pointer; 
+  transition: filter .15s ease, transform .02s ease;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(25,118,210,.25);
+}
+
+button:disabled { 
+  opacity: .6; 
+  cursor: not-allowed; 
+}
+
+button.outline { 
+  background: #fff; 
+  color: #1976d2; 
+  border: 1px solid #1976d2; 
+}
+
+button.outline:hover:not(:disabled) {
+  background: #f5f9ff;
+}
+
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+
+thead th { 
+  text-align: left; 
+  font-weight: 600; 
+  border-bottom: 1px solid #eee; 
+  padding: 10px; 
+  white-space: nowrap;
+}
+
+tbody td { 
+  border-bottom: 1px solid #f4f4f4; 
+  padding: 10px; 
+}
+
+/* Alinhar números à direita (ISSQN) e estreitar a coluna SN */
+tbody td:nth-child(4),
+thead th:nth-child(4) {
+  text-align: right;
+}
+tbody td:nth-child(6),
+thead th:nth-child(6) {
+  width: 72px; /* SN */
+  text-align: center;
+}
+
+.info { 
+  padding: 10px; 
+  color: #4a4a4a; 
+}
+
+.error { 
+  padding: 10px; 
+  background: #fde8e8; 
+  color: #7a0b0b; 
+  border: 1px solid #f7c8c8;
+  border-radius: 8px; 
+}
+
+.hint {
+  margin-top: 6px;
+  color: #666;
+  font-size: .92rem;
+}
+
+@media (max-width: 640px) { 
+  .row { gap: 6px; }
+  input[type="text"],
+  input:not([type]) { min-width: 0; flex: 1 1 100%; }
+  
+  /* Tabela empilhada */
+  thead { 
+    display: none; 
+  } 
+  tbody tr { 
+    display: block; 
+    border-bottom: 1px solid #eee; 
+    padding: 8px 10px; 
+  } 
+  tbody td { 
+    display: grid; 
+    grid-template-columns: 120px 1fr; 
+    gap: 8px; 
+    padding: 6px 0; 
+    border: 0; 
+  } 
+  tbody td::before { 
+    content: attr(data-th); 
+    font-weight: 600; 
+    color: #555; 
+  }
+}

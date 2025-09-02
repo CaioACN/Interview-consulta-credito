@@ -20,46 +20,17 @@ services:
     networks:
       - consulta-net
 
-  kafka:
-    image: bitnami/kafka:3.7
-    container_name: consulta-creditos-kafka
-    environment:
-      KAFKA_ENABLE_KRAFT: "yes"
-      KAFKA_CFG_NODE_ID: "1"
-      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094"
-      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094"
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT"
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
-      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
-      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
-      KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
-      KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR: "1"
-      ALLOW_PLAINTEXT_LISTENER: "yes"
-      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
-    ports:
-      - "9094:9094"
-    volumes:
-      - kafka_data:/bitnami/kafka
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/bitnami/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
-      interval: 10s
-      timeout: 5s
-      retries: 12
-    restart: unless-stopped
-    networks:
-      - consulta-net
-
   consulta-creditos-api:
     build:
       context: ./consulta-creditos-api
       dockerfile: Dockerfile
+    container_name: consulta-creditos-api
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/creditosdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SERVER_PORT: 8080
     depends_on:
       db:
         condition: service_healthy
@@ -71,10 +42,10 @@ services:
   consulta-creditos-web:
     build:
       context: ./consulta-creditos-web
-      # args:
-      #   API_BASE_URL: "http://consulta-creditos-api:8080"
+      dockerfile: Dockerfile
+    container_name: consulta-creditos-web
     ports:
-      - "8081:80"
+      - "8081:80"   # <— corrige para 8081:80 (Nginx escuta 80)
     depends_on:
       - consulta-creditos-api
     networks:
@@ -82,7 +53,6 @@ services:
 
 volumes:
   dbdata:
-  kafka_data:
 
 networks:
   consulta-net: {}

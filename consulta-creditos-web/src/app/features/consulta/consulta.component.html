@@ -1,0 +1,81 @@
+<!-- src/app/features/consulta/consulta.component.html -->
+<div class="container">
+  <h1>Consulta de Créditos</h1>
+
+  <form [formGroup]="form" (ngSubmit)="buscar()" class="card" novalidate>
+    <div class="row radios">
+      <label for="tipo-nfse">
+        <input id="tipo-nfse" type="radio" name="tipo" formControlName="tipo" value="nfse">
+        Buscar por NFS-e
+      </label>
+      <label for="tipo-credito">
+        <input id="tipo-credito" type="radio" name="tipo" formControlName="tipo" value="credito">
+        Buscar por Nº do Crédito
+      </label>
+    </div>
+
+    <div class="row">
+      <input
+        formControlName="valor"
+        placeholder="Digite o número"
+        inputmode="numeric"
+        autocomplete="off"
+        aria-label="Número da NFS-e ou do crédito"
+      >
+      <button type="submit" [disabled]="form.invalid || carregando" [attr.aria-busy]="carregando">Buscar</button>
+      <button type="button" class="outline" (click)="limpar()">Limpar</button>
+    </div>
+
+    <div class="hint" *ngIf="form.get('tipo')?.value === 'nfse'">Ex.: 7891011</div>
+    <div class="hint" *ngIf="form.get('tipo')?.value === 'credito'">Ex.: 123456</div>
+  </form>
+
+  <div *ngIf="carregando" class="info" aria-live="polite">Carregando…</div>
+  <div *ngIf="erro" class="error" role="alert">⚠ {{ erro }}</div>
+
+  <div class="table-card" *ngIf="!carregando && resultados.length">
+    <table>
+      <thead>
+        <tr>
+          <th>Nº Crédito</th>
+          <th>NFS-e</th>
+          <th>Data</th>
+          <th>ISSQN</th>
+          <th>Tipo</th>
+          <th>SN</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of resultados">
+          <td data-th="Nº Crédito">{{ c.numeroCredito }}</td>
+          <td data-th="NFS-e">{{ c.numeroNfse }}</td>
+          <!-- '2024-02-25' é ISO e o DatePipe formata -->
+          <td data-th="Data">{{ c.dataConstituicao | date:'dd/MM/yyyy' }}</td>
+          <!-- Exibe como moeda BRL (duas casas) -->
+          <td data-th="ISSQN">{{ c.valorIssqn | currency:'BRL':'symbol':'1.2-2' }}</td>
+          <td data-th="Tipo">{{ c.tipoCredito }}</td>
+          <!-- DTO já traz 'Sim'/'Não' -->
+          <td data-th="SN">{{ c.simplesNacional }}</td>
+          <td data-th="Ação">
+            <button type="button" (click)="verDetalhe(c)">Detalhes</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info" *ngIf="!carregando && !erro && !resultados.length">
+    Nenhum resultado para os filtros informados.
+  </div>
+
+  <div class="card" *ngIf="detalhe">
+    <h2>Crédito {{ detalhe.numeroCredito }}</h2>
+    <ul>
+      <li>Alíquota: {{ detalhe.aliquota | number:'1.2-2' }}%</li>
+      <li>Valor Faturado: {{ detalhe.valorFaturado | currency:'BRL':'symbol':'1.2-2' }}</li>
+      <li>Dedução: {{ detalhe.valorDeducao | currency:'BRL':'symbol':'1.2-2' }}</li>
+      <li>Base de Cálculo: {{ detalhe.baseCalculo | currency:'BRL':'symbol':'1.2-2' }}</li>
+    </ul>
+  </div>
+</div>
