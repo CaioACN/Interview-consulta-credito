@@ -34,6 +34,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # API exposta na porta 8080 no host para consistência
     ports:
       - "8080:8080"
     networks:
@@ -42,10 +43,9 @@ services:
   consulta-creditos-web:
     build:
       context: ./consulta-creditos-web
-      dockerfile: Dockerfile
     container_name: consulta-creditos-web
     ports:
-      - "8081:80"   # <— corrige para 8081:80 (Nginx escuta 80)
+      - "8081:80"   # Nginx escuta 80 dentro do container; expõe 8081 no host
     depends_on:
       - consulta-creditos-api
     networks:

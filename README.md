@@ -142,33 +142,63 @@ Resposta:
 - Dialog de detalhes
 - Responsivo para dispositivos móveis
 
-##🐳 Executando com Docker Compose
+## 🚀 Como Executar
 
-**Na raiz do projeto:**
+### Opção 1: Docker Compose (Recomendado)
+
+**Windows:**
 ```bash
-docker compose up -d --build
+# Executar script automatizado
+start-docker.bat
+
+# Ou manualmente
+docker-compose up --build
 ```
-## Testar consultar-credito
 
-> Pré-requisitos: Ter o Docker no sistema.
-
-- clonar o projeto
- 
+**Linux/Mac:**
 ```bash
+# Executar script automatizado
+./start-docker.sh
 
- git clone https://github.com/CaioACN/Interview-consulta-credito.git
+# Ou manualmente
+docker-compose up --build
 ```
- 
-- Executar Docker composse
 
- ```bash
- # Ir a pasta
- cd Interview-consulta-credito/
- # Executar Docker Compose
- docker compose up --build -d
+**Acessos:**
+- Frontend: http://localhost:8081
+- Backend API: http://localhost:8080
+- Swagger UI: http://localhost:8080/swagger-ui
+- API Docs: http://localhost:8080/v3/api-docs
 
- ```
-- Navegar pelo Sistema `http://localhost:8081`
+### Opção 2: Desenvolvimento Local
+
+**Windows:**
+```bash
+# Executar script automatizado
+start-local.bat
+```
+
+**Linux/Mac:**
+```bash
+# Executar script automatizado
+./start-local.sh
+```
+
+**Acessos:**
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:8080
+- Swagger UI: http://localhost:8080/swagger-ui
+- API Docs: http://localhost:8080/v3/api-docs
+
+### Configuração de Portas
+
+| Serviço | Local | Docker |
+|---------|-------|--------|
+| Frontend | 4200 | 8081 |
+| Backend | 8080 | 8080 |
+| Database | 5432 | 5432 |
+
+> **Nota:** Todas as configurações de proxy foram corrigidas para garantir comunicação correta entre frontend e backend.
 
 
 
