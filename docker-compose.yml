@@ -3,16 +3,16 @@ services:
     image: postgres:16
     container_name: consulta-creditos-db
     environment:
-      POSTGRES_DB: creditosdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-creditosdb}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - ./db/init:/docker-entrypoint-initdb.d
       - dbdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d creditosdb"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-creditosdb}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -26,17 +26,17 @@ services:
       dockerfile: Dockerfile
     container_name: consulta-creditos-api
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/creditosdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-creditosdb}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
       SERVER_PORT: 8080
     depends_on:
       db:
         condition: service_healthy
-    # API exposta na porta 8080 no host para consistência
+    # API exposta em porta parametrizada para evitar conflito com execução local
     ports:
-      - "8080:8080"
+      - "${API_PORT:-8086}:8080"
     networks:
       - consulta-net
 
@@ -45,7 +45,7 @@ services:
       context: ./consulta-creditos-web
     container_name: consulta-creditos-web
     ports:
-      - "8081:80"   # Nginx escuta 80 dentro do container; expõe 8081 no host
+      - "${WEB_PORT:-8081}:80"   # Nginx escuta 80 dentro do container; expõe 8081 no host
     depends_on:
       - consulta-creditos-api
     networks:

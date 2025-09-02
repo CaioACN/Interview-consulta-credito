@@ -12,7 +12,11 @@ public class CorsConfig {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-          .allowedOrigins("http://localhost:4200", "http://localhost:8081")
+          .allowedOrigins(
+            "http://localhost:4200",  // Angular dev server
+            "http://localhost:8081",  // Docker web
+            "http://localhost:58229"  // VS Code Live Server
+          )
           .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
           .allowedHeaders("*")
           .allowCredentials(true)
